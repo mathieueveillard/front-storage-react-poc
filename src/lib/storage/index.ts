@@ -1,4 +1,4 @@
-import { composeWithLens, Lens } from "./lens";
+import { createLens, Lens } from "./lens";
 import { Reducer } from "./reducer";
 
 type Store<State, SubState> = {
@@ -16,7 +16,7 @@ const _createStore = <State, SubState = State>(
   const getState = (): SubState => lens.get(state);
 
   const updateState = (reducer: Reducer<SubState>): void => {
-    state = composeWithLens(lens, reducer)(state);
+    state = lens.reduce(reducer)(state);
   };
 
   const focus = <Focus>(lens: Lens<State, Focus>): Store<State, Focus> =>
@@ -30,7 +30,10 @@ const _createStore = <State, SubState = State>(
 };
 
 export const createStore = <State>(initialState: State): Store<State, State> =>
-  _createStore(initialState, {
-    get: (state) => state,
-    set: (_, state) => state,
-  });
+  _createStore(
+    initialState,
+    createLens(
+      (state) => state,
+      (_, state) => state
+    )
+  );

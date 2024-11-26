@@ -1,12 +1,14 @@
 import { createStore } from ".";
-import { Lens } from "./lens";
+import { createLens } from "./lens";
 
 type State = {
   count: number;
+  other: "other";
 };
 
 const initialState: State = {
   count: 0,
+  other: "other",
 };
 
 describe("Test of createStore", () => {
@@ -15,20 +17,20 @@ describe("Test of createStore", () => {
     const store = createStore<State>(initialState);
 
     // When
-    store.updateState(({ count }) => ({ count: count + 1 }));
+    store.updateState((state) => ({ ...state, count: state.count + 1 }));
     const actual = store.getState();
 
     // Then
-    const expected: State = { count: 1 };
+    const expected: State = { count: 1, other: "other" };
     expect(actual).toEqual(expected);
   });
 
   test("It should allow to update a state with focusing", () => {
     // Given
-    const lens: Lens<State, number> = {
-      get: ({ count }) => count,
-      set: (_, count) => ({ count }),
-    };
+    const lens = createLens<State, number>(
+      ({ count }) => count,
+      (state, count) => ({ ...state, count })
+    );
     const store = createStore<State>(initialState).focus(lens);
 
     // When
