@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { ApplicationState, useGlobalState } from "../..";
 import { createLens } from "../../lib/utils/Lens";
+import Code from "../utils/Code";
+import Button from "../utils/Button";
+import H2 from "../utils/H2";
 
 const lens = createLens<ApplicationState, number>(
   ({ b }) => b,
@@ -14,19 +17,19 @@ const Component: React.FunctionComponent = () => {
     console.log("[B] User clicks the 'Increment' button");
     const state = updateState((n) => n + 1);
     console.log("[B] New (synchronous) value for b: ", state);
-    console.log(
-      "[B] Any business action based on the updated state, e.g. mutating the server"
-    );
   };
 
   useEffect(() => {
-    console.log("[B] Component renders");
+    console.log("[B] Component renders\n---------------------------");
   });
 
   return (
     <div>
-      <div>b: {state}</div>
-      <button onClick={increment}>Increment b</button>
+      <H2>Component B</H2>
+      <div className="flex gap-2">
+        <Code>b: {state}</Code>
+        <Button onClick={increment}>Increment b</Button>
+      </div>
     </div>
   );
 };

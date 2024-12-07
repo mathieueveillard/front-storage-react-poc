@@ -1,10 +1,12 @@
-# Proof of Concept
+# front-storage-react-poc
 
 ## The problem it solves
 
 In the Redux ecosystem, reducers implement business rules. We believe reducers should live outside of Redux, which is a global state storage in the first place. In other words, we want to enforce a separation of concerns between business and storage.
 
-## An example
+## Demo
+
+![Screen capture as a demo](/assets/images/front-storage-react-poc-screen-capture.png)
 
 This is the only setup required. `connect` creates a global store and makes it available through a `useGlobalState` hook.
 
@@ -24,34 +26,31 @@ A component interacts with the global state as follows:
 
 ```typescript
 // ComponentA.tsx
-import React, { useEffect } from "react";
-import { ApplicationState, useGlobalState } from "../..";
-import { createLens } from "../../lib/utils/Lens";
-
-// A lens allows you to focus on a given part of the global state
 const lens = createLens<ApplicationState, number>(
   ({ a }) => a,
   (state, a) => ({ ...state, a })
 );
 
 const Component: React.FunctionComponent = () => {
-  // state and updateState are focused according to the lens
   const { state, updateState } = useGlobalState(lens);
 
   const increment = (): void => {
+    console.log("[A] User clicks the 'Increment' button");
     const state = updateState((n) => n + 1);
-    console.log("New (synchronous) value for a: ", state);
-    // Meaning you can base business actions on this value, e.g. mutating the server
+    console.log("[A] New (synchronous) value for a: ", state);
   };
 
   useEffect(() => {
-    console.log("Component A renders");
+    console.log("[A] Component renders\n---------------------------");
   });
 
   return (
     <div>
-      <div>{state}</div>
-      <button onClick={increment}>Increment a</button>
+      <H2>Component A</H2>
+      <div className="flex gap-2">
+        <Code>a: {state}</Code>
+        <Button onClick={increment}>Increment a</Button>
+      </div>
     </div>
   );
 };

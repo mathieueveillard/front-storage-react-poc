@@ -2,32 +2,17 @@ import React from "react";
 import A from "./A";
 import B from "./B";
 import GlobalState from "./GlobalState";
+import H1 from "./utils/H1";
 
 const Component: React.FunctionComponent = () => (
-  <div>
-    <GlobalState />
-    <table>
-      <thead>
-        <tr>
-          <td>
-            <b>Component A</b>
-          </td>
-          <td>
-            <b>Component B</b>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <A />
-          </td>
-          <td>
-            <B />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div className="m-10">
+    <H1>front-storage-react-poc</H1>
+    <div className="grid grid-rows-2 grid-flow-col gap-6">
+      <GlobalState />
+      <A />
+      <div></div>
+      <B />
+    </div>
   </div>
 );
 

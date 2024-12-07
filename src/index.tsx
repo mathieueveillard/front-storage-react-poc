@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Demo from "./Demo";
 import { connect } from "./lib/react-connect";
+import "./index.css";
 
 export type ApplicationState = {
   a: number;
